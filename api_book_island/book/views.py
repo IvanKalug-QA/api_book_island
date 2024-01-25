@@ -1,12 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from .models import Pages, Book
-from .serializers import (BookSerializer, PagesSerializer,
-                          UserFullSerializer, UserSerializer)
+from .serializers import (BookSerializer, PagesSerializer)
 
 User = get_user_model()
 
@@ -48,31 +46,3 @@ class PagesViewSet(UpdataDeletePerformMixin, ModelViewSet):
         page = get_object_or_404(self.get_queryset(),
                                  page=self.kwargs.get('pk'))
         return page
-
-
-class UserViewSet(ModelViewSet):
-    queryset = User.objects.all()
-
-    def get_permissions(self):
-        if self.action == 'create':
-            return [AllowAny()]
-        return super().get_permissions()
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return UserSerializer
-        if self.action == 'retrieve':
-            if self.get_object().username != self.request.user.username:
-                return UserSerializer
-            return UserFullSerializer
-        return UserFullSerializer
-
-    def perform_update(self, serializer):
-        if serializer.instance.username != self.request.user.username:
-            raise PermissionDenied('Доступ запрещен!')
-        super().perform_update(serializer)
-
-    def perform_destroy(self, instance):
-        if instance.username != self.request.user.username:
-            raise PermissionDenied('Доступ запрещен!')
-        super().perform_destroy(instance)

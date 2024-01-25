@@ -5,20 +5,6 @@ from django.contrib.auth.hashers import make_password
 
 from .models import Pages, Book
 
-User = get_user_model()
-
-
-class PasswordSerializer(serializers.Field):
-
-    def to_representation(self, value):
-        return value
-
-    def to_internal_value(self, data):
-        if len(data) < 4:
-            raise serializers.ValidationError('Пароль слишком короткий!')
-        return make_password(data)
-
-
 class BookSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field='username',
                                           read_only=True)
@@ -41,20 +27,4 @@ class PagesSerializer(serializers.ModelSerializer):
         model = Pages
         fields = ("id", "title", "text", "page", "book", "author")
         read_only_fields = ("id", "book", "author")
-
-
-class UserFullSerializer(serializers.ModelSerializer):
-    password = PasswordSerializer()
-
-    class Meta:
-        model = User
-        fields = ("id", "username", "password")
-        read_only_fields = ("id", "last_login")
-
-
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ("id", "username")
-        read_only_fields = ("id", "username")
+        
