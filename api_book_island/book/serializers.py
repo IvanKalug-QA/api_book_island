@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.hashers import make_password
 
 from .models import Pages, Book
+
 
 class BookSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field='username',
@@ -27,4 +26,3 @@ class PagesSerializer(serializers.ModelSerializer):
         model = Pages
         fields = ("id", "title", "text", "page", "book", "author")
         read_only_fields = ("id", "book", "author")
-        
