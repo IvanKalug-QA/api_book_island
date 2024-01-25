@@ -1,12 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
 
 from .models import Pages, Book
 from .serializers import (BookSerializer, PagesSerializer)
-
-User = get_user_model()
 
 
 class UpdataDeletePerformMixin:
