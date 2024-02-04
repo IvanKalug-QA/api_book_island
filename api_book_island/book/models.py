@@ -19,3 +19,11 @@ class Pages(models.Model):
                              related_name='pages')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='pages')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['page',],
+                name='unique_page'
+            )
+        ]

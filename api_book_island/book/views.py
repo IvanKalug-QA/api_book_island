@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Pages, Book
 from .serializers import (BookSerializer, PagesSerializer)
@@ -24,6 +25,7 @@ class UpdataDeletePerformMixin:
 class BookViewSet(UpdataDeletePerformMixin, ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

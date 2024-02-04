@@ -26,3 +26,10 @@ class PagesSerializer(serializers.ModelSerializer):
         model = Pages
         fields = ("id", "title", "text", "page", "book", "author")
         read_only_fields = ("id", "book", "author")
+        validators = [
+            serializers.UniqueTogetherValidator(
+                queryset=Pages.objects.all(),
+                fields=('page', ),
+                message='Такая страница уже есть!'
+            )
+        ]
