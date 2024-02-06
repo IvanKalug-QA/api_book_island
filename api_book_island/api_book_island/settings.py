@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'drf_yasg',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -41,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'api_book_island.urls'
@@ -142,3 +144,7 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
