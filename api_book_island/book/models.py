@@ -10,6 +10,14 @@ class Book(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='book')
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'description'],
+                name='unique_title_description'
+            )
+        ]
+
 
 class Pages(models.Model):
     title = models.CharField(max_length=256, verbose_name='Заголок')

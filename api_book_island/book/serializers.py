@@ -13,6 +13,13 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ("id", "title", "description", "author", "number_of_pages")
         read_only_fields = ("id", "author", "number_of_pages")
+        validators = [
+            serializers.UniqueTogetherValidator(
+                queryset=Book.objects.all(),
+                fields=('title', 'description'),
+                message='Такая книга у тебя уже есть!'
+            )
+        ]
 
     def get_number_of_pages(self, obj):
         return get_object_or_404(Book, id=obj.pk).pages.count()
